@@ -92,20 +92,6 @@ int applypatch(int argc, char * argv[]) {
 	if ((f = fopen(argv[3], "r")) == NULL)
 		err(1, "fopen(%s)", argv[3]);
 
-	/*
-	 File format:
-	 0	8	"BSDIFF40"
-	 8	8	X
-	 16	8	Y
-	 24	8	sizeof(newfile)
-	 32	X	bzip2(control block)
-	 32+X	Y	bzip2(diff block)
-	 32+X+Y	???	bzip2(extra block)
-	 with control block a set of triples (x,y,z) meaning "add x bytes
-	 from oldfile to x bytes from the diff block; copy y bytes from the
-	 extra block; seek forwards in oldfile by z bytes".
-	 */
-
 	/* Read header */
 	if (fread(header, 1, 32, f) < 32) {
 		if (feof(f))
